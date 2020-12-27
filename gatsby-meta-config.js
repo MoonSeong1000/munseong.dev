@@ -3,10 +3,10 @@ module.exports = {
   description: `Blog posted about ...`,
   author: `Munseong Cheon`,
   introduction: `성장하고 싶은 주니어 개발자 입니다. 새로운 기술을 배우고 적용하는 것을 좋아합니다.`,
-  siteUrl: `https://gatsby-starter-bee.netlify.com`, // Your blog site url
+  siteUrl: `https://munseong.dev`, // Your blog site url
   social: {
     twitter: ``, // Your Twitter account
-    github: ``, // Your GitHub account
+    github: `https://github.com/moonseong1000`, // Your GitHub account
     medium: ``, // Your Medium account
     facebook: ``, // Your Facebook account
     linkedin: ``, // Your LinkedIn account
@@ -15,7 +15,7 @@ module.exports = {
   keywords: [`blog`],
   comment: {
     disqusShortName: '', // Your disqus-short-name. check disqus.com.
-    utterances: 'JaeYeopHan/gatsby-starter-bee', // Your repository for archive comment
+    utterances: 'moonseong1000/munseong.dev', // Your repository for archive comment
   },
   configs: {
     countOfInitialPost: 10, // Config your initial count of post
