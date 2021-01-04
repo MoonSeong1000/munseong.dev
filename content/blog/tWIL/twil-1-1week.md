@@ -1,6 +1,6 @@
 ---
 title: ' [tWIL] 21년 1월 1째주'
-date: 2020-01-04 19:09:30
+date: 2021-01-04 19:09:30
 category: 'tWIL'
 draft: false
 keywords: ['tWIL','기술','블로그','회고','Graphql','Flutter', '머신러닝 스터디']
