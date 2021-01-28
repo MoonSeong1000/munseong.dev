@@ -20,7 +20,7 @@
 
 In this template...
 
-- 💄 Code highlight with Fira Code font
+- 💄 Code highlight with Fira Code 
 - 🧙 CLI Tool
 - 😄 Emoji (emojione)
 - 🗣 Social share feature (Twitter, Facebook)
