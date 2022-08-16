@@ -6,10 +6,10 @@ module.exports = {
   siteUrl: `https://munseong.dev`, // Your blog site url
   social: {
     twitter: ``, // Your Twitter account
-    github: `https://github.com/moonseong1000`, // Your GitHub account
+    github: `moonseong1000`, // Your GitHub account
     medium: ``, // Your Medium account
     facebook: ``, // Your Facebook account
-    linkedin: `https://www.linkedin.com/in/munseong-cheon-7242381b5/`, // Your LinkedIn account
+    linkedin: `munseong-cheon-7242381b5/`, // Your LinkedIn account
   },
   icon: `content/assets/felog.png`, // Add your favicon
   keywords: [`blog`],
