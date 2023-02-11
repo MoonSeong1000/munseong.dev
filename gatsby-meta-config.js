@@ -2,7 +2,7 @@ module.exports = {
   title: `Munseong's dev;`,
   description: `Blog posted about ...`,
   author: `Munseong Cheon`,
-  introduction: `성장하고 싶은 주니어 개발자 입니다. 새로운 기술을 배우고 적용하는 것을 좋아합니다.`,
+  introduction: `좋은 코드로 좋은 제품을 만드는 것을 추구하는 안드로이드 개발자 천문성입니다.`,
   siteUrl: `https://munseong.dev`, // Your blog site url
   social: {
     twitter: ``, // Your Twitter account
