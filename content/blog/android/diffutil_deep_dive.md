@@ -100,7 +100,7 @@ X축에는 변경 전 문자열(ANDROID)을 넣어주고 Y축에는 변경 후 �
 RecyclerView에서 이런 알고리즘을 적용한 api가 DiffUtil이다. 
 DiffUtil 클래스는 두 가지 Callback을 제공한다. `DiffUtil.Callback()`과 `DiffUtil.ItemCallback()`이 있다.
 
-1. DiffUtil.Callback()
+### 1. DiffUtil.Callback()
 ```
 class DiffUtilCallback(
     private val oldList: List<User>,
@@ -137,8 +137,11 @@ private fun setItems(newList: List<User>) {
   }
 ```
 
-2. DiffUtil.ItemCallback()
+
+### 2. DiffUtil.ItemCallback()
+
 위에서 알고리즘의 시간복잡도와 공간복잡도를 봤듯이 공간복잡도에 최적화된 알고리즘이다. 아이템 개수가 많이지게 된다면 시간 복잡도가 올라가 연산 시간이 길어진다. 따라서 이런 계산은 백그라운드 쓰레드에서 처리되는게 올바르다. DiffUtil.ItemCallback과 AsyncListDiffer를 사용하면 자체적으로 멀티 쓰레드에 대한 처리가 되어 있어서 편리하게 사용할 수 있다. 
+
 ```
 class DiffUtilItemCallback : DiffUtil.ItemCallback<User>() {
 
@@ -160,6 +163,7 @@ class DiffUtilItemCallback : DiffUtil.ItemCallback<User>() {
   		asyncDiffer.submitList(newItem)
   }
 ```
+
 코드 스니펫에서 볼수 있듯이 AysncListDiffer에서 DiffUtilItemCallback을 사용한다. adapter 클래스에서 사용할 AsyncListDiffer와 DiffUtilItemCallback만 정의해주면 된다. 
 
 ## ListAdapter
@@ -190,7 +194,8 @@ public abstract class ListAdapter<T, VH extends RecyclerView.ViewHolder>
         mDiffer = new AsyncListDiffer<>(new AdapterListUpdateCallback(this), config);
         mDiffer.addListListener(mListener);
     }
-    ...
+    
+    // 이하 생략
 }
 ```
 
