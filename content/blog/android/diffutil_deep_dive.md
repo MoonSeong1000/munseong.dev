@@ -7,7 +7,7 @@ keywords: ['DiffUtil','RecyclerView','Eugene W. Myers','Difference algorithm']
 ---
 
 
-RecyclerView의 DiffUtil은 recyclerView에 표시될 리스트의 값이 변경될 때 효율적으로 바뀐 부분을 찾고 업데이트를 해주는 유틸리티 클래스이다. recyclerView의 성능에 대해서 고민을 해본 개발자라면 이미 diffUtil를 사용하고 있을 것이다. notifyDataSetChanged를 사용하게 되면 불필요한 부분에 대해서도 렌더링이 일어나게 되지만 diffUtil을 사용하면 업데이트가 불필요한 뷰에 대해서는 생성이나 렌더링이  두번 일어나지 않게 할수 있기 때문이다. 최근에 recyclerView를 적극적으로 써아햐는 UI 작업을 하였는데 문득 diffUtil의 작동 원리(알고리즘)에 대해서 궁금하였고 예제만 보고 작성했던 코드에 대해 한번 정리해보고 싶은 욕구가 들었다. 일단 공식 문서를 보고 DiffUtil에 대해 알아보자.
+RecyclerView의 DiffUtil은 recyclerView에 표시될 리스트의 값이 변경될 때 효율적으로 바뀐 부분을 찾고 업데이트를 해주는 유틸리티 클래스이다. recyclerView의 성능에 대해서 고민을 해본 개발자라면 이미 diffUtil를 사용하고 있을 것이다. notifyDataSetChanged를 사용하게 되면 불필요한 부분에 대해서도 렌더링이 일어나게 되지만 diffUtil을 사용하면 업데이트가 불필요한 뷰에 대해서는 생성이나 렌더링이 두 번 일어나지 않게 할 수 있기 때문이다. 최근에 recyclerView를 적극적으로 써아햐는 UI 작업을 하였는데 문득 diffUtil의 작동 원리(알고리즘)에 대해서 궁금하였고 예제만 보고 작성했던 코드에 대해 한번 정리해보고 싶은 욕구가 들었다. 일단 공식 문서를 보고 DiffUtil에 대해 알아보자.
 
 
 ## DiffUtil 이란?
@@ -76,7 +76,8 @@ X축에는 변경 전 문자열(ANDROID)을 넣어주고 Y축에는 변경 후 �
 <img src="../../assets/diffutil_3.png">
  
  <br>
-(0,0)에서 (7,7)까지 최단 경로로 가는 길이 이것만 있는 것은 아니다. 우리가 이 그래프를 그린 이유는 최단 경로가 나온 선을 통해서 diff를 알 수 있다는 점이다. **오른쪽으로 이동하는 것은 삭제**이고 **아래로 내려가는 선은 삽입**이다. **대각선으로 가는 것은 유지**한다는 뜻이다. 대각선으로 가는 것은 변경하지 않는 것이기 때문에 오른쪽/아래로 이동하는 횟수를 최소화 하는 것이 유진 마이어스 알고리즘의 기본 개념이다. 다만 실제 유진 마이어스 알고리즘을 실행해보면 (7,7)까지의 최적 경로는 아래와 같이 나올것이다. 
+
+(0,0)에서 (7,7)까지 최단 경로로 가는 길이 이것만 있는 것은 아니다. 우리가 이 그래프를 그린 이유는 최단 경로가 나온 선을 통해서 diff를 알 수 있다는 점이다. **오른쪽으로 이동하는 것은 삭제**이고 **아래로 내려가는 선은 삽입**이다. **대각선으로 가는 것은 유지**한다는 뜻이다. 대각선으로 가는 것은 변경하지 않는 것이기 때문에 오른쪽/아래로 이동하는 횟수를 최소화 하는 것이 유진 마이어스 알고리즘의 기본 개념이다. 다만 실제 유진 마이어스 알고리즘을 실행해보면 (7,7)까지의 최적 경로는 아래와 같이 나을 것이다. 
 <img src="../../assets/diffutil_4.png">
 
 <br>
@@ -84,9 +85,11 @@ X축에는 변경 전 문자열(ANDROID)을 넣어주고 Y축에는 변경 후 �
 <img src="../../assets/diffutil_5.png">
 
 <br>
-그렇다. 유진 마이어스 알고리즘은 삭제보다 삽입의 우선순위가 더 높다. 이런 이유는 삭제, 삽입, 유지가 번갈아 가면서 있는 것 보다는 삭제가 최대한 많이 일어나고 삽입이 들어가는 구조가 보기에 더 익숙해서이다. 유진 마이어스 알고리즘은 이러한 로직을 통해 보다 양질의 diff를 제공한다. 유진 마이어스의 알고리즘 개념은 사실상 이 내용이며 한마디로 표현하자면 (0,0)에서 (n,m)까지의 오른쪽/아래의 횟수를 최소화로 하며 가는 경로이다.
+그렇다. 유진 마이어스 알고리즘은 삭제보다 삽입의 우선순위가 더 높다. 이런 이유는 삭제, 삽입, 유지가 번갈아 가면서 있는 것 보다는 삭제가 최대한 많이 일어나고 삽입이 들어가는 구조가 보기에 더 익숙해서이다. 유진 마이어스 알고리즘은 이러한 로직을 통해 보다 양질의 diff를 제공한다. 유진 마이어스의 알고리즘 개념은 사실상 이 내용이며 한마디로 표현하자면 (0,0)에서 (n,m)까지의 오른쪽/아래의 횟수를 최소화로 하는 경로이다.
+
 
 <br>
+
 
 [DiffUtil 안드로이드 공식 문서](https://developer.android.com/reference/android/support/v7/util/DiffUtil.html)나 이 알고리즘의 논문을 보면 다음과 같이 나와 있다.
 > This algorithm is optimized for space and uses O(N) space to find the minimal number of addition and removal operations between the two lists. It has O(N + D^2) expected time performance where D is the length of the edit script.
@@ -140,7 +143,7 @@ private fun setItems(newList: List<User>) {
 
 ### 2. DiffUtil.ItemCallback()
 
-위에서 알고리즘의 시간복잡도와 공간복잡도를 봤듯이 공간복잡도에 최적화된 알고리즘이다. 아이템 개수가 많이지게 된다면 시간 복잡도가 올라가 연산 시간이 길어진다. 따라서 이런 계산은 백그라운드 쓰레드에서 처리되는게 올바르다. DiffUtil.ItemCallback과 AsyncListDiffer를 사용하면 자체적으로 멀티 쓰레드에 대한 처리가 되어 있어서 편리하게 사용할 수 있다. 
+위에서 알고리즘의 시간복잡도와 공간복잡도를 봤듯이 공간복잡도에 최적화된 알고리즘이다. 아이템 개수가 많아지게 된다면 시간 복잡도가 올라가 연산 시간이 길어진다. 따라서 이런 계산은 백그라운드 쓰레드에서 처리 하는게 올바르다. DiffUtil.ItemCallback과 AsyncListDiffer를 사용하면 자체적으로 멀티 쓰레드에 대한 처리가 되어 있어서 편리하게 사용할 수 있다. 
 
 ```
 class DiffUtilItemCallback : DiffUtil.ItemCallback<User>() {
@@ -201,8 +204,8 @@ public abstract class ListAdapter<T, VH extends RecyclerView.ViewHolder>
 
 
 ## 마무리
-항상 모든 기술에는 트레이드 오프, 즉 장단점이 있다고 생각한다. notifyDataSetChanged을 사용하기 보단 diffUtil을 사용하고 diffUtil을 사용하기 보단 AsyncListDiffer를 사용하는게 좋고 이 모든것들이 추상화 되어 있는 ListAdapter를 사용하는게 렌더링에 있어서 당연히 좋을 것이다. 하지만 불필요한 렌더링을 줄여 앱의 성능을 향상시킬순 있겠지만 그만큼 메모리 사용량이나 CPU 시간은 증가 할 것이다. 만약에 리스트중에 변경되는 항목을 알고 있다면 그 수가 적다면 직접 notifyItemChanged 메소드를 호출하는게 훨씬 이득일 것이다.
-이런 트레이드 오프 되는 상황을 판단하여 적절한 곳에 적절한 기술을 사용함으로써 원활한 사용자 경험을 제공하는 것이 중요하다고 생각한다.
+항상 모든 기술에는 트레이드 오프, 즉 장/단점이 있다고 생각한다. notifyDataSetChanged을 사용하기 보단 diffUtil을 사용하고 diffUtil을 사용하기 보단 AsyncListDiffer를 사용하는게 좋고 이 모든것들이 추상화 되어 있는 ListAdapter를 사용하는게 렌더링에 있어서 당연히 좋을 것이다. 하지만 불필요한 렌더링을 줄여 앱의 성능을 향상시킬순 있겠지만 그만큼 메모리 사용량이나 CPU 시간은 증가 할 것이다. 만약에 리스트중에 변경되는 항목을 알고 있다면 그 수가 적다면 직접 notifyItemChanged 메소드를 호출하는게 훨씬 이득일 것이다.
+이런 트레이드 오프 되는 상황을 판단하여 적절한 곳에 적절한 기술을 사용함으로써 원활한 사용자 경험을 제공하는 것이 중요하다고 생각한다. 
 
 <br>
 
