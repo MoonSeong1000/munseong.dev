@@ -1,5 +1,5 @@
 ---
-title: '[Andorid] Recyclerview DiffUtil Deep Dive'
+title: '[Android] Recyclerview DiffUtil Deep Dive'
 date: 2023-02-26 22:00:00
 category: 'android'
 draft: false
