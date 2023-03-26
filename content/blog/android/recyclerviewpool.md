@@ -121,4 +121,11 @@ class ParentAdapter(private val parentList: List<ParentItem>) :
 실제 onCreateViewHolder가 호출되는 횟수를 로그로 찍어 세어보았다.
 총 63개의 이미지가 그려질 때 recyclerViewPool을 사용하지 않으면 34번이 호출되었고 recyclerViewPool을 사용하면 19번이 호출되었다.
 이 글에서 따로 언급하지 않았지만 recyclerChildrenOnDetach도 설정을 하면 단 7번밖에 호출되지 않았다.
- 퍄
+
+### RecyclerViewPool을 적용하지 않았을 때
+<img src="https://user-images.githubusercontent.com/52484624/227777875-b2a033d0-15dc-4478-99b2-430d70f1dc39.gif">
+
+<br>
+
+### RecyclerViewPool을 적용했을 때
+<img src="https://user-images.githubusercontent.com/52484624/227779549-2fc9d4c7-20bd-4726-a5fb-05565b666266.gif">
