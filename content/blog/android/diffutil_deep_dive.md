@@ -24,7 +24,7 @@ RecyclerView의 DiffUtil은 recyclerView에 표시될 리스트의 값이 변경
 ## DiffUtil Algorithm Deep Dive
 
 위에서 언급 했듯이 diffutil에 사용하는 알고리즘은 Eugene W. Myers의 차이 알고리즘을 사용한다. diffUtil에서만 사용되는게 아니라 사실 git, subversion과 같이 버전을 관리하는 소프트웨어에 자주 사용된다. 
-<img src="../../assets/diffutil_1.png">
+<img src="../../assets/diffutil_3.png">
 <br>
 
 이렇게 두 버전에 대해 삽입, 삭제, 유지에 대해 나타내는 알고리즘이라고 볼수 있다.<br>
