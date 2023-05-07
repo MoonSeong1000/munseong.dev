@@ -130,7 +130,7 @@ iterator를 5번으로 두었을 때의 최솟값, 중앙값, 최대값을 확�
 StartUp을 측정했을 때 timeToInitialDisplayMs와 timeToFullDisplayMs의 값을 볼수 있다.
 
 - timeToInitialDisplayMs : 시스템에 시작 인텐트가 수신된 후 첫 프레임을 렌더링 할때까지의 시간
-- timeToFullDisplayMs : 시스템에 시작 인텐트가 수신된 후 reportFullDrawn (링크 달기) 메소드가 호출될때까지의 시간
+- timeToFullDisplayMs : 시스템에 시작 인텐트가 수신된 후 [reportFullyDrawn()](https://developer.android.com/reference/android/app/Activity#reportFullyDrawn()) 메소드가 호출될때까지의 시간
 
 또한 아래의 Iterator 숫자를 볼수 있는데 각 결과에 대해 Trace로 있는 링크로 연결된다. 이슈가 있다면 Trace를 분석해서 조치를 취할수도 있다.
 
