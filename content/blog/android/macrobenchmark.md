@@ -32,7 +32,7 @@ project → New → Module을 들어가면 BenchMark Templates를 볼수 있다.
 
 ### build.gradle 설정
 모듈을 구성하고 나면 app build.gradle의 buildTypes에 benchmark 모드가 추가된다.
-```
+```groovy
 ...
 benchmark {
 	signingConfig signingConfigs.debug
@@ -49,7 +49,7 @@ build variant가 benchMark로 설정했을 때 matchingFallbacks 옵션에 의�
 ### 측정 코드
 
 benchmark 모듈을 추가하면 기본으로 아래 코드가 생성됩니다.
-```
+```kotlin
 @RunWith(AndroidJUnit4::class)
 class ExampleStartupBenchmark {
    @get:Rule
@@ -70,11 +70,13 @@ class ExampleStartupBenchmark {
 
 macrobenchmark는 일반적인 instrumented 테스트처럼 @Runwith, @Test, @Rule과 같은 JUnit 구문을 사용한다. benchmarkRule의 measureRepeated 함수가 벤치마크를 시작하는 함수다. 이 함수는 코드에서 보듯이 다음과 같은 파라미터를 설정할 수 있다.
 
-- packageName : 성능을 측정할 어플리케이션을 지정한다. macrobenchmark는 앱과 별도의 프로세스로 실행된다. 따라서 측정할 대상 앱을 어떤 앱인지 지정해줘야 하기 때문에 이 파라미터가 꼭 필요하다.
-- metric : 벤치마크 중에 측정하려는 항목을 기입. 위 예시 코드에서는 시작시간을 측정하는 StartUpTimingMetric이 사용되었지만 다양한 측정 항목이 있다. ([https://developer.android.com/reference/kotlin/androidx/benchmark/macro/Metric](https://developer.android.com/reference/kotlin/androidx/benchmark/macro/Metric))
-- iterations :  말 그대로 반복 횟수를 나타낸다. 많이 반복할 수록 안정성, 신뢰도가 높아지지만 실행 시간이 길어진다.
-- startupMode : 벤치마크를 시작할 때 애플리케이션을 시작하는 방법을 정의. 앱의 시작 상태는 cold start, warm start, hot start가 있는데 이 모드를 선택할 수 있음.
-- measureBlock : 벤치마크 중에 측정하려는 작업을 정의하고(활동 시작, UI 요소 클릭, 스크롤, 스와이프 등) Macrobenchmark는 이 블록 중에 정의된 metric를 수집합니다.
+- **packageName** : 성능을 측정할 어플리케이션을 지정한다. macrobenchmark는 앱과 별도의 프로세스로 실행된다. 따라서 측정할 대상 앱을 어떤 앱인지 지정해줘야 하기 때문에 이 파라미터가 꼭 필요하다.
+- **metric** : 벤치마크 중에 측정하려는 항목을 기입. 위 예시 코드에서는 시작시간을 측정하는 StartUpTimingMetric이 사용되었지만 다양한 측정 항목이 있다. ([https://developer.android.com/reference/kotlin/androidx/benchmark/macro/Metric](https://developer.android.com/reference/kotlin/androidx/benchmark/macro/Metric))
+- **iterations** :  말 그대로 반복 횟수를 나타낸다. 많이 반복할 수록 안정성, 신뢰도가 높아지지만 실행 시간이 길어진다.
+- **startupMode** : 벤치마크를 시작할 때 애플리케이션을 시작하는 방법을 정의. 앱의 시작 상태는 cold start, warm start, hot start가 있는데 이 모드를 선택할 수 있음.
+- **measureBlock** : 벤치마크 중에 측정하려는 작업을 정의하고(활동 시작, UI 요소 클릭, 스크롤, 스와이프 등) Macrobenchmark는 이 블록 중에 정의된 metric를 수집합니다.
+
+<br>
 
 추가적으로 CompilationMode가 있다. 컴파일 모드를 지정할 수 있는 것이다. 안드로이드 API 마다 컴파일 모드가 다르다. 위의 특징중에 `구글 플레이 스토어에 의해 설치된 최적화 된 앱을 로컬에서 재현할 수 있음`이라는 말이 있는데 이 옵션을 통해 가능하다. 구글 플레이 스토어를 통해 설치된 앱은 android 버전에 따라 다르긴 하지만 AOT 컴파일(pre-compile)을 통해 최적화된 상태로 사용자의 디바이스에 깔리게 된다.
 
@@ -98,7 +100,7 @@ ComplilationMode를 통해 pre-compile의 정도를 설정할수 있다.
 
 에뮬레이터에서 실행할수도 있지만 일반적으로 실제 기기에서 테스트를 돌리는것을 권장한다. 왜냐하면 에뮬레이터를 실행시키는 컴퓨터의 부하가 많게 되면 벤치마크가 느리게 표시되기 때문이다. 에뮬레이터로 실행을 해야만 하는 경우라면 아래 옵션을 추가해주면 실행이 된다.
 
-```
+```groovy
 // :macrobenchmark:build.gradle
 
 defaultConfig {
@@ -110,7 +112,7 @@ testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = 'EMULA
 
 만약에 앱에서 사용하는 라이브러리 중 implementaion이 아닌 release와 debug를 따로 사용하기 위해 아래 코드처럼 분기해놓은 의존성이 있다면 라이브러를 찾지 못해 오류가 발생할것이다.
 
-```
+```groovy
 dependencies {
 	...
     benchmarkImplementation 'com.github.theGlenn:flipper-android-no-op:0.3.0'

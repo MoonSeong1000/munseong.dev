@@ -96,7 +96,7 @@ LayoutManager에서 getViewForPosition()을 호출했을때 RecyclerView와 Cach
 
 적용 방법은 아래와 같다. 부모 Adapter에서 RecycledViewPool을 생성하여 자식 Adapter들에게 붙여주면 된다.
 
-```
+```kotlin
 class ParentAdapter(private val parentList: List<ParentItem>) :
     RecyclerView.Adapter<ParentAdapter.ParentViewHolder>() {
 

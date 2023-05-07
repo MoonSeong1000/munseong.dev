@@ -104,7 +104,7 @@ RecyclerView에서 이런 알고리즘을 적용한 api가 DiffUtil이다.
 DiffUtil 클래스는 두 가지 Callback을 제공한다. `DiffUtil.Callback()`과 `DiffUtil.ItemCallback()`이 있다.
 
 ### 1. DiffUtil.Callback()
-```
+```kotlin
 class DiffUtilCallback(
     private val oldList: List<User>,
     private val newList: List<User>
@@ -132,7 +132,7 @@ class DiffUtilCallback(
 - getChangePayload(int oldItemPosition, int newItemPosition): 만약 areItemTheSame()이 true를 반환하고 areContentsTheSame()이 false를 반환하면 이 메서드가 호출되어 변경 내용에 대한 페이로드를 가져옵니다.
 
 위와 같이 DiffUtil.Callback()을 상속받아 메소드를 오버라이드 하면 Adapter에서 다음과 같이 사용할 수 있다.
-```
+```kotlin
 private fun setItems(newList: List<User>) {
       val diffCallback = DiffUtilCallback(oldList, newList)
       val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
@@ -145,7 +145,7 @@ private fun setItems(newList: List<User>) {
 
 위에서 알고리즘의 시간복잡도와 공간복잡도를 봤듯이 공간복잡도에 최적화된 알고리즘이다. 아이템 개수가 많아지게 된다면 시간 복잡도가 올라가 연산 시간이 길어진다. 따라서 이런 계산은 백그라운드 쓰레드에서 처리 하는게 올바르다. DiffUtil.ItemCallback과 AsyncListDiffer를 사용하면 자체적으로 멀티 쓰레드에 대한 처리가 되어 있어서 편리하게 사용할 수 있다. 
 
-```
+```kotlin
 class DiffUtilItemCallback : DiffUtil.ItemCallback<User>() {
 
     override fun areItemsTheSame(oldItem: User, newItem: User) =
@@ -157,7 +157,7 @@ class DiffUtilItemCallback : DiffUtil.ItemCallback<User>() {
 
 ```
 
-```
+```kotlin
  private val asyncDiffer = AsyncListDiffer(this, DiffUtilItemCallback())
     
   override fun getItemCount() = asyncDiffer.currentList.size
@@ -172,7 +172,7 @@ class DiffUtilItemCallback : DiffUtil.ItemCallback<User>() {
 ## ListAdapter
 바로 위의 DiffUtil.ItemCallback을 사용할 때 AsyncListDiffer에 넣어줌으로써 사용하였다. 하지만 ListAdapter 클래스를 사용하면 내부적으로 AsyncListDiffer을 사용하고 있기 때문에 ListAdapter를 사용하면 보일러플레이트 코드를 줄일 수 있다. 아래 코드는 ListAdapter 추상 클래스이다. 구현부를 보면 위에서 AsyncListDiffer를 사용했을 때처럼 그대로 구현되어 있다. 다시말하자면 ListAdapter를 상속하기만 하면 AsyncListDiffer를 사용할 수 있게 되고 백그라운드에서 Diff 알고리즘이 동작할수 있도록 해준다.
 
-```
+```kotlin
 public abstract class ListAdapter<T, VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH> {
     final AsyncListDiffer<T> mDiffer;

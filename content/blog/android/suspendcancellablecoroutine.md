@@ -10,7 +10,7 @@ OkDownload 라이브러리 내부 코드를 볼 일이 있어 분석하던 도�
 
 SuspendCancellableCoroutine이 무엇인지 알아보기 전에 아래 코드를 봐보자.
 
-```
+```kotlin
 class TestViewModel : ViewModel() {
     interface Result {
         fun success()
@@ -63,7 +63,7 @@ registerUser는 suspend 함수이다. 로직은 다음과 같다.
 
 이런 상황에 대해 좀 더 간편하게 사용할수 있도록 코루틴 api로 suspendCancellableCoroutine 제공한다. 비슷하게 suspendCoroutine도 존재한다. `suspendCoroutine`과 `suspendCancellableCoroutine`에 대한 차이를 알아보자.
 
-```
+```kotlin
 suspend fun fetchData(): String {
     return suspendCoroutine { continuation: Continuation ->
         // 비동기 작업 처리
@@ -96,7 +96,7 @@ block은 CancellableContination을 파라미터로 가지며 반환값이 없는
 
 맨 위에 있던 예시 코드를 suspendCancellableCoroutine를 사용해서 수정하면 아래와 같이 될 것이다.
 
-```
+```kotlin
 suspend fun registerUser(id: String, password: String): Boolean {
     suspendCancellableCoroutine { continuation ->
         isValidIdPwd(
