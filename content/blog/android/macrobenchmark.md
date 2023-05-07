@@ -17,7 +17,7 @@ keywords: ['macrobenchmark']
 ## 구성
 ### 모듈 추가
 
-project → New → Module을 들어가면 BenchMark Templates를 볼수 있다
+project → New → Module을 들어가면 BenchMark Templates를 볼수 있다.
 
 <img src="../../assets/macrobenchmark_1.png">
 
@@ -41,7 +41,7 @@ benchmark {
 }
 ...
 ```
-build variant가 benchMark로 설정했을 때 machingFallback 옵션에 의해 release 모드를 따르도록 한다. 릴리즈 환경과 최대한 똑같이 하기 위해 debuggalbe은 false로 해준다. app 모듈의 varaint를 benchmakr로 바꾸면 멀티 모듈로 구성된 다른 모듈들도 release모드로 변하는것을 볼수 있다.
+build variant가 benchMark로 설정했을 때 matchingFallbacks 옵션에 의해 release 모드를 따르도록 한다. 릴리즈 환경과 최대한 똑같이 하기 위해 debuggable false로 해준다. app 모듈의 variant가 benchmark로 바꾸면 멀티 모듈로 구성된 다른 모듈들도 release 모드로 변하는것을 볼수 있다.
 
 <img src="../../assets/macrobenchmark_3.png">
 <br>
@@ -138,3 +138,11 @@ StartUp을 측정했을 때 timeToInitialDisplayMs와 timeToFullDisplayMs의 값
 ### 후기
 
 macroBenchmark를 도입한건 앱 시작 시간을 측정하기 위해서였다. 위 글에서 쓰진 않았지만 스크롤 등 유저 인터렉션에 대해서도 성능 측정이 가능해서 좀더 보고 싶다면 코드랩에서 확인할 수 있다. 컴파일 모드를 옵션으로 둘수 있어 앱 릴리즈 전에 macroBenchmark를 통해 성능을 측정할수 있는것이 큰 장점이라고 생각이 든다. 구글 플레이를 통한 최적화 앱에 대해 측정도 가능하니 현재 릴리즈 모드의 앱과 사용자에게 전달될때 성능을 비교하고 싶다면 사용해봐도 좋아보인다. 또한 gradle 명령어도 지원을 하고 결과에 대한 output도 파일로 나오기 때문에 CI 환경이 구축되어 있다면 도입을 해봐도 충분히 좋을것 같다.
+
+
+### 참고
+https://developer.android.com/codelabs/android-macrobenchmark-inspect?hl=ko#0
+
+https://developer.android.com/topic/performance/benchmarking/macrobenchmark-overview?hl=ko
+
+https://developer.android.com/studio/profile/macrobenchmark-metrics?hl=ko
