@@ -18,7 +18,7 @@ ssl pinning에 대해서 먼저 한줄로 소개하자면 앱과 서버가 통�
 아래 그림처럼 만약 HTTP를 통해 통신한다면, 보안이 적용되지 않아 개인정보가 인터넷 상에서 노출될 수 있다. 
 따라서 SSL을 사용하여 데이터를 암호화하는 것이 **HTTPS 통신 방법**이다.
 <img src="../../assets/ssl_pinning_1.png">
-<[출처](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=ssl-overview-tls-handshake)>
+[[출처](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=ssl-overview-tls-handshake)]
 
 클라이언트에서 데이터를 암호화 시키고 서버에서 암호화 된 내용을 복호화 하기 위해서는 둘만의 약속이 있어야 한다.
 클라이언트와 서버 간에 암호화된 데이터를 교환하기 위해서는 접속한 서버가 올바른 서버인지, 유효한 서버인지 판단할수 있어야 하고, 
@@ -27,7 +27,8 @@ ssl pinning에 대해서 먼저 한줄로 소개하자면 앱과 서버가 통�
 아래 사진과 함께 ssl handshake 과정에 대해 자세히 알아보자.
 
 <img src="../../assets/ssl_pinning_2.png">
-<[출처](https://www.cloudflare.com/ko-kr/learning/ssl/why-is-http-not-secure)>
+
+[[출처](https://www.cloudflare.com/ko-kr/learning/ssl/why-is-http-not-secure)]
 
 1. Client Hello : 클라이언트의 암호화 알고리즘 목록, 세션 식별자, 랜덤 바이트 문자열 등이 담은 문자열을 Hello 메시지에 담아서 서버로 전송한다.
 2. Server Hello : 클라이언트의 Hello 메시지를 받으면 클라이언트가 보낸 암호화 알고리즘 목록 중 선택한 알고리즘과, CA에서 서명된 서버의 공개 인증서, 세션 식별자등의 정보를 Hello 메시지를 통해 전송한다.
@@ -137,14 +138,16 @@ frida 등의 유명한 프레임워크를 사용하면 후킹을 통해 쉽게 �
 
 
 ## 출처
-<HTTPS/SSL>
+**HTTPS/SSL**
+
 https://www.cloudflare.com/ko-kr/learning/ssl/why-is-http-not-secure
 
-<SSL Handsake>
+**SSL Handsake**
+
 https://medium.com/@kasunpdh/ssl-handshake-explained-4dabb87cdce
 https://www.ibm.com/docs/en/ibm-mq/7.5?topic=ssl-overview-tls-handshake
 
-<SSL Pinning>
+**SSL Pinning**
 https://mailapurvpandey.medium.com/ssl-pinning-in-android-90dddfa3e051
 https://blog.larapulse.com/security/prevent-mitm-attacks
 https://linears.tistory.com/entry/Android-OKHTTP-SSL-Pinning-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
