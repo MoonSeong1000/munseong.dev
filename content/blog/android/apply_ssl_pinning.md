@@ -1,6 +1,6 @@
 ---
 title: '[Android] SSL Pinning을 왜 적용해야 할까?'
-date: 2023-05-21 22:00:00
+date: 2023-05-21 17:00:00
 category: 'android'
 draft: false
 keywords: ['SSL Pinning', 'Https', 'SSL', 'Okhttp']
@@ -18,6 +18,7 @@ ssl pinning에 대해서 먼저 한줄로 소개하자면 앱과 서버가 통�
 아래 그림처럼 만약 HTTP를 통해 통신한다면, 보안이 적용되지 않아 개인정보가 인터넷 상에서 노출될 수 있다. 
 따라서 SSL을 사용하여 데이터를 암호화하는 것이 **HTTPS 통신 방법**이다.
 <img src="../../assets/ssl_pinning_1.png">
+<[출처](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=ssl-overview-tls-handshake)>
 
 클라이언트에서 데이터를 암호화 시키고 서버에서 암호화 된 내용을 복호화 하기 위해서는 둘만의 약속이 있어야 한다.
 클라이언트와 서버 간에 암호화된 데이터를 교환하기 위해서는 접속한 서버가 올바른 서버인지, 유효한 서버인지 판단할수 있어야 하고, 
@@ -26,6 +27,7 @@ ssl pinning에 대해서 먼저 한줄로 소개하자면 앱과 서버가 통�
 아래 사진과 함께 ssl handshake 과정에 대해 자세히 알아보자.
 
 <img src="../../assets/ssl_pinning_2.png">
+<[출처](https://www.cloudflare.com/ko-kr/learning/ssl/why-is-http-not-secure)>
 
 1. Client Hello : 클라이언트의 암호화 알고리즘 목록, 세션 식별자, 랜덤 바이트 문자열 등이 담은 문자열을 Hello 메시지에 담아서 서버로 전송한다.
 2. Server Hello : 클라이언트의 Hello 메시지를 받으면 클라이언트가 보낸 암호화 알고리즘 목록 중 선택한 알고리즘과, CA에서 서명된 서버의 공개 인증서, 세션 식별자등의 정보를 Hello 메시지를 통해 전송한다.
@@ -38,8 +40,8 @@ ssl handshake에 대해서 간단하게 알아보았다. 실제로는 더 복잡
 
 ## 중간자 공격 (MITM : Man-in-the-middle)
 
-만일 안드로이드 기기에서 프록시로 통신하도록 지정해두면 프록시와 SSL이 연결을 맺게 된다. 그리고 프록시는 서버와 연결을 맺게 된다. 
-프록시가 공인 인증된 CA를 받게 될것이고, 아니라면 사설(가짜) CA를 받게 될것이다.핸드쉐이크 과정 중 3번을 보면 신뢰할수 있는 사이트인지 확인한다.
+만일 안드로이드 기기에서 프록시로 통신하도록 지정해두면 프록시와 SSL 연결을 맺게 된다. 그리고 프록시는 서버와 연결을 맺게 된다. 
+디바이스는 프록시가 공인 인증된 CA라면 받게 될것이고, 아니라면 사설(가짜) CA를 받게 될것이다. 핸드쉐이크 과정 중 3번을 보면 신뢰할수 있는 사이트인지 확인한다.
 만약 전자라면 프록시와 통신을 위한 준비가 될것이고, 후자라면 사설 CA를 해독할수 있는 인증서를 디바이스가 가지고 있지 않기 때문에 실패한다. 
 하지만 디바이스를 루팅시키고 직접 사설 CA를 등록시키게 된다면 앱은 서버를 신뢰할수 있게 되고, 중간에서 모든 패킷의 정보를 가로챌수 있을 것이다.
 패킷에 개인정보가 있다면 유출될수 있을 것이고, 서버 도메인과 apikey가 있다면 서버에 과부화를 줄수도 있을 것이다. 이것이 중간자 공격이다.
@@ -51,7 +53,7 @@ ssl handshake에 대해서 간단하게 알아보았다. 실제로는 더 복잡
 
 위에 말했던 것처럼 클라이언트에 지정한 서버 호스트의 인증서일 경우에만 통신이 가능하도록 소스 코드를 명시해야 한다.
 예를 들어, 클라이언트 앱이 "munseong.com" 도메인과 통신해야 할 경우, 앱의 소스 코드에 "munseong.com" 도메인에 해당하는 인증서만 허용하도록 하드코딩한다. 
-이렇게 하면 앱은 오직 특정 도메인에 대한 인증서만 신뢰하고 통신을 진행하게 됩니다.
+이렇게 하면 앱은 오직 특정 도메인에 대한 인증서만 신뢰하고 통신을 진행하게 된다.
 아래는 3가지 방법으로 SSL Pinning을 적용하는 방법이다.
 (앱에 하드코딩을 해놓았기 때문에 만일 서버의 CA가 바뀌게 되거나, 만료가 된다면 새 인증서 정보로 업데이트 하기 위해 앱 업데이트는 필수다)
 
@@ -102,7 +104,7 @@ val okHttpClient = OkHttpClient.Builder()
 
 Andorid 7.0부터 지원되는 기능이며, 가장 선호되는 방법이다. 소스 코드에서 직접 설정하지 않고, xml에 도메인과 키를 직접 명시하는 방법이다.
 선언적이기 때문에 유지보수에 쉽고 보일러 플레이트 코드를 줄이게 된다. 명시된 파일과 AndroidManifest.xml을 바인딩한다.
-1. rse/xml/network_security_config.xml을 생성합니다.
+1. rse/xml/network_security_config.xml을 생성한다.
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
@@ -115,7 +117,7 @@ Andorid 7.0부터 지원되는 기능이며, 가장 선호되는 방법이다. �
     </domain-config>
 </network-security-config>
 ```
-2. AndroidManifest에 networkSecurityConfig 태그를 설정합니다.
+2. AndroidManifest에 networkSecurityConfig 태그를 설정한다.
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
@@ -134,5 +136,16 @@ SSL Pinning을 통해서 중간 프록시 서버에서 패킷을 캡쳐하지 �
 frida 등의 유명한 프레임워크를 사용하면 후킹을 통해 쉽게 우회가 가능하다. 서비스를 구현하는 것 만큼이나 보안에도 각별히 신경써야겠다는 생각이 든다.
 
 
+## 출처
+<HTTPS/SSL>
+https://www.cloudflare.com/ko-kr/learning/ssl/why-is-http-not-secure
 
+<SSL Handsake>
+https://medium.com/@kasunpdh/ssl-handshake-explained-4dabb87cdce
+https://www.ibm.com/docs/en/ibm-mq/7.5?topic=ssl-overview-tls-handshake
+
+<SSL Pinning>
+https://mailapurvpandey.medium.com/ssl-pinning-in-android-90dddfa3e051
+https://blog.larapulse.com/security/prevent-mitm-attacks
+https://linears.tistory.com/entry/Android-OKHTTP-SSL-Pinning-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
 
