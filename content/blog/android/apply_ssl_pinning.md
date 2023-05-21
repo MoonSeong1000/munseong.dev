@@ -148,6 +148,7 @@ https://medium.com/@kasunpdh/ssl-handshake-explained-4dabb87cdce
 https://www.ibm.com/docs/en/ibm-mq/7.5?topic=ssl-overview-tls-handshake
 
 **SSL Pinning**
+
 https://mailapurvpandey.medium.com/ssl-pinning-in-android-90dddfa3e051
 https://blog.larapulse.com/security/prevent-mitm-attacks
 https://linears.tistory.com/entry/Android-OKHTTP-SSL-Pinning-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
