@@ -8,7 +8,7 @@ keywords: ['runTest','TestDispatcher','Coroutine','UnitTest']
 
 ## RunTest
 runTest는 테스트 코드를 단일 스레드에서 실행할 수 있게 해주는 함수이다.
-테스트 코드에서 suspend 함수를 호출하기 위해서는 코루틴 블록에서 호출해야 합니다.
+테스트 코드에서 suspend 함수를 호출하기 위해서는 코루틴 블록에서 호출해야 한다.
 Coroutine 1.6 이전 버전에서 코루틴을 테스트하기 위해서 runBlockingTest를 통해 테스트를 했었지만 1.6 이후 부터는 runBlockingTest가 Deprecated 되었기 때문에 runTest를 사용해서 코루틴 블록을 테스트 해야 한다.
 
 RunTest를 사용하면 기본적으로 delay로 인한 지연을 자동으로 무시하게 하고, try-catch 되지 않은 Exception을 대신 처리해주는 특징을 가지고 있다.
@@ -42,7 +42,7 @@ fun test_withContext() = runTest {
 <img src="../../assets/runtest_1.png">
 
 ## TestDispatcher
-이 내용을 바탕으로 정리하자면 테스트 코드에서 코루틴이 여러 스레드에서 실행된다면 예측 가능성이 떨어지게 됩니다. 코루틴의 실행 시간, 실행 순서 등을 보장받지 못하기 때문입니다. TestDispatcher를 사용하게 되면 하나의 스케쥴러를 공유하고 이 스케쥴러에 대해 모든 생성된 테스트 스레드가 공유하게 됩니다. 따라서 병목 현상을 막을 수 있으며 실행 시간, 실행 순서에 대해 보장받게 됩니다. 아래 그림과 같은 구조가 됩니다.
+이 내용을 바탕으로 정리하자면 테스트 코드에서 코루틴이 여러 스레드에서 실행된다면 예측 가능성이 떨어지게 된다. 코루틴의 실행 시간, 실행 순서 등을 보장받지 못하기 때문이다. TestDispatcher를 사용하게 되면 하나의 스케쥴러를 공유하고 이 스케쥴러에 대해 모든 생성된 테스트 스레드가 공유하게 된다. 따라서 병목 현상을 막을 수 있으며 실행 시간, 실행 순서에 대해 보장받게 된다. 아래 그림과 같은 구조가 된다.
 
 <img src="../../assets/runtest_2.png">
 
@@ -53,7 +53,7 @@ TestDispathcher의 구현에는 StandardTestDispatcher와 UnconfinedTestDispatch
 - 코루틴이 시작되면 스케줄러의 대기열에 추가되고 테스트 스레드가 사용할수 있을 때마다 실행된다.
 - 실제 환경에서 코루틴 스케쥴링과 비슷하게 맞춰 테스트하고 싶을때 사용한다.
 
-위 특징을 이해하기 위해서 실제 테스트 코드를 보겠습니다.
+위 특징을 이해하기 위해서 실제 테스트 코드를 보자.
 ```kotlin
 class UserRepository() {
     val users = mutableListOf<String>()
@@ -71,15 +71,15 @@ fun StandardTestDispatcherTest() = runTest(StandardTestDispatcher()) {
 }
 ```
 
-위와 같은 StandardTestDispatcher를 사용한 테스트 코드가 있을때 실행 될까요? 코루틴을 테스트하기 위해서 runTest를 사용하므로 동작하는것처럼 보입니다. 하지만 결과는 실패합니다.
+위와 같은 StandardTestDispatcher를 사용한 테스트 코드가 있을때 실행 될까요? 코루틴을 테스트하기 위해서 runTest를 사용하므로 동작하는것처럼 보인다. 하지만 결과는 실패가 된다.
 
 <img src="../../assets/runtest_3.png">
 
-특징을 보면 작업이 시작되면 스케줄러에 추가된다고 나와 있습니다. 테스트 스레드를 바로 사용할수 없게 되면 대기열에 있는 상태이고 그대로 assertEquals가 호출되면서 실패하게 됩니다. 아래 그림처럼 스케줄러에 비동기 작업이 추가되어 있는 상태고 실행되지 않은채 테스트 코드가 종료됩니다.
+위의 특징을 보면 작업이 시작되면 스케줄러에 추가된다고 나와 있다. 테스트 스레드를 바로 사용할 수 없게 되면 대기열에 있는 상태이고 그대로 assertEquals가 호출되면서 실패하게 된다. 아래 그림처럼 스케줄러에 비동기 작업이 추가되어 있는 상태고 실행되지 않은채 테스트 코드가 종료된다.
 
 <img src="../../assets/runtest_4.png">
 
-스케줄러에 있는 작업들을 실행시키기 위한 다음과 같은 api들을 제공합니다.
+스케줄러에 있는 작업들을 실행시키기 위한 다음과 같은 api들을 제공한다.
 - [advanceUntilIdle](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/-test-coroutine-scheduler/advance-until-idle.html) : 대기열에 아무것도 남지 않을 때까지 스케줄러에서 다른 모든 코루틴을 실행합니다.
   
 <img src="../../assets/runtest_7.png">
@@ -92,7 +92,8 @@ fun StandardTestDispatcherTest() = runTest(StandardTestDispatcher()) {
   
 <img src="../../assets/runtest_5.png">
 
-스케줄링 api를 사용해서 실행을 조절하고 통제할수 있습니다. 위 테스트 코드에서 assert전에 advanceUntilIdle을 사용해서 모든 작업을 실행하기를 기다린 후 테스트코드가 성공하는 것을 볼수 있습니다.
+스케줄링 api를 사용해서 실행을 조절하고 통제할수 있다. 위 테스트 코드에서 assert전에 advanceUntilIdle을 사용해서 모든 작업을 실행하기를 기다린 후 테스트코드가 성공하는 것을 볼수 있다.
+
 ```kotlin
 @Test
 fun StandardTestDispatcherTest() = runTest(StandardTestDispatcher()) {
