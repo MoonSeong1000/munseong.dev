@@ -15,7 +15,7 @@ module.exports = {
   keywords: [`blog`],
   comment: {
     disqusShortName: '', // Your disqus-short-name. check disqus.com.
-    utterances: 'moonseong1000/munseong.dev', // Your repository for archive comment
+    utterances: 'MoonSeong1000/munseong.dev', // Your repository for archive comment
   },
   configs: {
     countOfInitialPost: 10, // Config your initial count of post
@@ -26,5 +26,5 @@ module.exports = {
   share: {
     facebookAppId: '', // Add facebookAppId for using facebook share feature v3.2
   },
-  ga: 'G-7MXBHQN0DQ', // Add your google analytics tranking ID
+  ga: 'G-7MXBHQN0DQ', // Add your google analytics tracking ID
 }

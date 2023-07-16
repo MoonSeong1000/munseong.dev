@@ -1,5 +1,5 @@
 ---
-title: '[인프라] terraform으로 cloud function 배포하기 (공통 코드 관리하기)'
+title: '[인프라] terraform으로 cloud function 배포하기'
 date: 2023-07-16 22:00:00
 category: 'infra'
 draft: false
@@ -128,7 +128,7 @@ resource "google_pubsub_topic" "topic" {
 }
 ```
 
-2) [Cloud Storage](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket)
+3) [Cloud Storage](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket)
 
 cloud function을 배포하기 위해서는 소스 코드를 zip 파일로 묶어서 cloud storage에 올려야한다. 이 zip 파일을 만들기 위해서 archive_file을 사용한다.
 terraform이 실행되기 전에 source_dir 필드에 적힌 weather_function 폴더를 대상으로 zip 파일로 만든다. terraform이 실행되면 bucket에 이 zip파일을 업로드 하도록
@@ -156,7 +156,7 @@ resource "google_storage_bucket_object" "object" {
 }
 ```
 
-3) [Cloud Function](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudfunctions_function.html)
+4) [Cloud Function](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudfunctions_function.html)
 
 cloud function 리소스도 아래오 같이 설정할 수 있다. 파이썬에서 살행하므로 runtime을 python으로 지정해주었다. 아래에서는 설정하지 않았지만 vpc, 인그레스 등등 공식문서를 참고해서 정의가
 가능하다.
