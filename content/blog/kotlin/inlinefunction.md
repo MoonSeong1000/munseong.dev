@@ -6,10 +6,10 @@ draft: false
 keywords: ['inline','crossinline','noinline','non-local return','local return','coroutine']
 ---
 
-1. [Inline Function이란](#Inline-Function이란)
-2. [Inline Function의 제약](#Inline-Function의-제약)
-3. [CrossInline](#CrossInline)
-4. [코루틴과 Inline Function](#코루틴과-Inline-Function)
+1. [Inline Function이란](#inline-function이란)
+2. [Inline Function의 제약](#inline-function의-제약)
+3. [CrossInline](#crossinline)
+4. [코루틴과 Inline Function](#코루틴과-inline-function)
 
 ## Inline Function이란
 
