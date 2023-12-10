@@ -6,16 +6,21 @@ draft: false
 keywords: ['inline','crossinline','noinline','non-local return','local return','coroutine']
 ---
 
-## Inline Function이란?
+1. [Inline Function이란](#Inline-Function이란)
+2. [Inline Function의 제약](#Inline-Function의-제약)
+3. [CrossInline](#CrossInline)
+4. [코루틴과 Inline Function](#코루틴과-Inline-Function)
 
-inline 키워드에 대해서는 개발을 하다보면 라이브러리 내부에서 많이 볼수 있습니다.
-흔하게 쓰는 collection내부에서도 api로 제공되는 함수로 많이 볼수 있습니다.
+## Inline Function이란
+
+inline 키워드에 대해서는 개발을 하다보면 라이브러리 내부에서 많이 볼수 있습니다.<br>
+흔하게 쓰는 collection내부에서도 사용된 함수를 많이 볼수 있습니다.
 <img src="../../assets/inlinefunction/image1.png">
 <img src="../../assets/inlinefunction/image2.png">
 
-inline 함수를 알아보기 전에 아래 코드를 봐보겠습니다.
+inline 함수를 알아보기 전에 아래 코드를 보겠습니다.
 runRegularFunc 함수에서는 regularFunc 실행시키고, runRegularFunc 함수에서는 파라미터로 받은 action 함수를 실행시켜 print를 하는 함수입니다. 
-kotlin을 사용하셨다면 눈에 들어오는 함수입니다.
+kotlin을 사용하셨다면 눈에 들어오는 간단한 함수입니다.
 
 ```kotlin
 fun regularFunc(action: () -> String) {  
@@ -28,7 +33,7 @@ fun runRegularFunc() {
 }
 ```
 
-이 코드를 자바로 디컴파일하게 되면 어떻게 될까요?
+이 코드를 자바로 디컴파일하게 되면 어떻게 될까요?<br>
 실제 IDE에서 디컴파일을 돌려보니 아래와 같은 결과가 나왔습니다.
 ```java
 public static final void regularFunc(@NotNull Function0 action) {  
@@ -57,9 +62,9 @@ public final void runRegularFunc() {
 }
 ```
 
-즉 Decompile된 결과를 보듯이, 람다(고차함수)를 사용하게 되면 매번 무명 함수 객체로 변환하게 되고, 메모리의 낭비와 런타임시 오버헤드가 발생하는것을 볼수 있습니다.
+즉 Decompile된 결과를 보듯이, 람다(고차함수)를 사용하게 되면 매번 무명 함수 객체로 변환하게 되고, 이 경우 **메모리의 낭비와 런타임시 오버헤드가 발생**시킬 것입니다.
 
-고차함수를 사용할때 이런 오버헤드를 줄이기 위해서 만들이진것이 inline 함수입니다. 
+**고차함수를 사용할때 이런 오버헤드를 줄이기 위해서 만들이진것이 inline 함수**입니다. 
 이번에도 inline 함수를 사용했을때 어떤 변화가 있는지 코드로 먼저 보도록 하겠습니다. 
 함수 앞에 inline 키워드를 붙이면 inline 함수로 동작하게 됩니다.
 ```kotlin
@@ -92,14 +97,14 @@ public static final void runInlineFunc() {
 }
 ```
 
-inline으로 함수를 실행시키고 Decompile을 해보니 runInlineFunc inlineFunc 호출하지 않고, 실행되어야 할 함수 본문을 직접 포함하고 있는것이 확인됩니다. 
+inline으로 함수를 정의하고 Decompile을 해보니 runInlineFunc에서 inlineFunc 호출하지 않고, **실행되어야 할 함수 본문을 직접 포함하고 있는것이 확인**됩니다. 
 따라서 무명 함수를 만들 필요가 사라지게 되었습니다.
 
 <img src="../../assets/inlinefunction/image3.png">
 
-inline 함수로 실행될때는 컴파일 되는 바이트 코드의 양은 많아지지만, 함수를 호출하거나 추가적인 객체를 생성하지 않는것을 볼수 있다.
+inline 함수로 실행될때는 컴파일 되는 바이트 코드의 양은 많아지지만, **함수를 호출하거나 추가적인 객체를 생성하지 않는것을 볼수 있습니다**.
 
-inline 함수를 사용했을때와, 일반 함수를 사용했을때 실제 얼마만큼의 효율이 있을지 측정해보겠습니다.
+inline 함수를 사용했을때와, 일반 함수를 사용했을때 실제 얼마만큼의 효율이 있는지 측정해보겠습니다.
 위의 예제코드를 살짝 바꿔서, inline 함수일때와 일반 함수일때 10000번씩 호출해보도록 했습니다.
 ```kotlin
 fun regularFunc(action: () -> String): String {  
@@ -134,9 +139,9 @@ fun testInlineFunc() {
 ```
 
 regularFunc를 호출했을때는 21ms가 소요됐고, inlineFunc를 호출했을때는 13ms가 소요되었습니다. 
-무명 함수를 만드는 시간 자체에서는 큰 차이가 없었습니다. 메모리 측정도 해보았는데요, 테스트 하나동안 사용하는 메모리를 print로 측정하기는 어려움이 있어 
-intellij에서 profile를 사용하였을때 각각 13.59mb와 5mb가 나온것을 확인하였습니다. 위 테스트만으로는 서비스 시 영향을 미칠정도의 결과는 아니겠지만지만, 
-inline 함수를 썼을때와 일반 함수를 사용했을때 차이는 있다는것을 확인할수 있었습니다.
+무명 함수를 만드는 시간 자체에서는 큰 차이가 없었습니다. 메모리 측정도 해보았는데, 테스트 하나동안 사용하는 메모리를 print로 측정하기는 어려움이 있어 
+intellij에서 profile를 사용하였을때 각각 13.59mb와 5mb가 나온것을 확인하였습니다. 위 테스트만으로는 서비스 시 영향을 미칠정도의 결과는 아니겠지만, 
+**inline 함수를 썼을때와 일반 함수를 사용했을때 시간,메모리상 차이는 있다는것을 확인할 수 있었습니다.**
 
 <img src="../../assets/inlinefunction/image4.png">
 
@@ -159,12 +164,12 @@ fun runInlineFunc() {
 	inlineFunc { "runInlineFunc" }  
 }
 ```
-runInlineFunc는 inlineFunc를 호출하고 람다를 다시 inlineFunc2에 넘기는 코드입니다. 이 경우 주석처럼 compile error를 볼수 있습니다.
+runInlineFunc는 inlineFunc를 호출하고 람다를 다시 inlineFunc2에 넘기는 코드입니다. 이 경우 주석처럼 compile error를 볼수 있습니다.<br>
 `Illegal usage of inline-parameter 'action' in 'public inline fun inlineFunc(action: () -> String):`
 
-왜 컴파일 에러가 발생할까요?
+왜 컴파일 에러가 발생할까요?<br>
 inline 함수의 특징을 다시 보면 알수 있습니다. 위에 말했던것처럼 인라이닝을 통해 람다를 객체로 만들지 않고 본문에 바로 삽입시킵니다. 
-따라서 inlineFunc2에 파라미터로 넘길 action 객체가 없기 때문에 에러가 발생하게 됩니다.
+따라서 **inlineFunc2에 파라미터로 넘길 action 객체가 없기 때문에 에러가 발생하게 됩니다**.
 
 해결하기 위해서는 inlineFunc2도 inline 함수로 바꾸거나, inlineFunc의 action 객체를 inline하지 않도록 만들어줘야합니다. 
 이때는 noinline을 사용하게 되는데 noinline에 대해서는 아래에서 좀더 살펴보겠습니다.
@@ -187,12 +192,13 @@ fun runInlineFunc() {
 	inlineFunc { "runInlineFunc" }  
 }
 ```
-이번에는 1번과 다르게 이런 컴파일 에러가 발생합니다.
+이번에는 1번과 다르게 이런 컴파일 에러가 발생합니다.<br>
 `Can't inline 'action' here: it may contain non-local returns`
 
 이 에러에 대해서 원인을 찾기 위해서는 no-local return과 local return에 대해서 알아야 합니다. 가볍게 짚고 넘어가겠습니다.
 
-아래 코드를 실행시키면 어떻게 될까요? "Alice is not found"는 로그에 나오지 않게 됩니다. 즉 forEach내부의 return이 forEach의 람다를 벗어나 상위 함수를 중단시켰습니다.
+아래 코드를 실행시키면 어떻게 될까요?<br>
+"Alice is not found"는 로그에 나오지 않게 됩니다. 즉 forEach내부의 return이 forEach의 람다를 벗어나 상위 함수를 중단시켰습니다.
 ```kotlin
 fun lookForAlice(people: List<String>) {  
 	people.forEach {  
@@ -225,19 +231,19 @@ fun lookForAlice2(people: List<String>) {
 
 <img src="../../assets/inlinefunction/image6.png" height="350">
 
-lookForAlice2 예제에서는 forEach 내부에서 return 하는것을 보았는데 어떻게 된걸까요?
-forEach의 람다식은 inline function으로 이루어져 있기 때문입니다.
+하지만 lookForAlice2 예제에서는 forEach 내부에서 return 하는것을 보았는데 어떻게 된걸까요?
+forEach의 람다식은 inline function으로 이루어져 있기 때문입니다. (inline은 no-local return을 허용하기 때문에)
 
 <img src="../../assets/inlinefunction/image7.png">
 
-다시 말해, inline function으로 이루어진 경우에만 non-local return을 사용할수 있습니다.
+다시 말해, **inline function으로 이루어진 경우에만 non-local return을 사용할수 있습니다.**
 
-다시 주제로 돌아가서, inline function에 인자로 전달받은 함수는 다른 함수에 쓸수 없는 이유가 무엇일까요?
+다시 주제로 돌아가서, inline function에 인자로 전달받은 함수는 다른 함수에 쓸수 없는 이유가 무엇일까요?<br>
 inline function에 인자로 전달받은 함수는 즉 non-local return입니다. 
-non-local return 식을 파라미터로 넘기게 되면 예상치 못한 함수 종료나, 런타임 오류를 발생시킬수 있다고 판단하여 kotlin에서 허용하지 않습니다.
+**non-local return 식을 파라미터로 넘기게 되면 예상치 못한 함수 종료나, 런타임 오류를 발생시킬수 있다고 판단하여 kotlin에서 허용하지 않습니다**.
 
-그럼 inline function에 전달받은 람다식은 무조건 다른 함수에 넘기지 못하고 안에서만 사용해야할까요? inline으로 만들고 싶지 않으면 noinline 키워드를 붙히면 됩니다. 
-noinline 키워드를 붙힘으로써 해당 함수는 local return으로 간주되고 action.invoke() 호출 시 에러가 발생하지 않는것을 확인할수 있습니다.
+그럼 inline function에 전달받은 람다식은 무조건 다른 함수에 넘기지 못하고 안에서만 사용해야할까요? <br>inline으로 만들고 싶지 않으면 noinline 키워드를 붙히면 됩니다. 
+noinline 키워드를 붙힘으로써 해당 함수는 action.invoke() 호출 시 에러가 발생하지 않는것을 확인할수 있습니다.
 
 <img src="../../assets/inlinefunction/image8.png" height="350">
 
@@ -247,12 +253,12 @@ noinline 키워드를 붙힘으로써 해당 함수는 local return으로 간주
 
 정리하자면 inlineFunc는 inline function이기 때문에 인자로받은 action 람다식은 non-local return식입니다. 
 하지만 kotlin에서는 non-local return에 대해서 다른 함수의 인자로 전달할때 에러를 내뱉습니다. 
-따라서 action을 noinline으로 설정해주면서 inline하지 못하도록 할수 있습니다.
+따라서 action을 **noinline으로 설정해주면서 inline하지 못하도록 할수 있습니다**.
 
 Decompile한 코드를 보게 되면 결국 noinline 때문에 inline의 이점을 가져가지 못하고 함수를 생성하게 됩니다. 
 위와 같은 상황에서는 무조건 noinline을 해야만 할까요? 개발자는 람다식을 다른 함수에서 호출할때 고려를 해서 noinline 키워드를 고려해야 할까요?
 
-이런 문제점을 해결하기 위해서 crossInline이 나오게 되었습니다.
+이런 문제점을 해결하기 위해서 **crossInline**이 나오게 되었습니다.
 
 ## CrossInline
 
@@ -262,11 +268,12 @@ crossInline을 붙히게 되면 no-local return을 사용하지 않는다는 뜻
 <img src="../../assets/inlinefunction/image10.png">
 
 noinline처럼 action을 따로 함수로 만들지 않고, inline처럼 본문에 삽입한 형태로 함수를 만들었다. 
-호출하는쪽에서는 inline으로 구성된 함수를 호출해서 사용하는 형태로 바뀐걸 확인할수 있습니다.
+호출하는쪽에서는 **inline으로 구성된 함수를 호출해서 사용하는 형태**로 바뀐걸 확인할수 있습니다.
 
 ## 코루틴과 Inline Function
 
-아래 간단한 Coroutine 코드가 있습니다. test 함수를 실행시키면 BEFORE가 호출되고, 람다식이 호출되고, AFTER가 호출되는 함수입니다.
+아래 간단한 Coroutine 코드가 있습니다.<br>
+test 함수를 실행시키면 BEFORE가 호출되고, 람다식이 호출되고, AFTER가 호출되는 함수입니다.
 ```kotlin
 fun main() = runBlocking {  
 	test {  
@@ -283,7 +290,7 @@ suspend fun test(action: suspend () -> Unit) {
 }
 ```
 
-이 함수에 대해서 inline 함수로 만들게 하고 싶다면 어떻게 해야할까요?
+이 함수에 대해서 inline 함수로 만들게 하고 싶다면 어떻게 해야할까요?<br>
 test 함수를 위와 같이 바꿔주면 됩니다.
 ```kotlin
 inline fun test(action: () -> Unit) {  
@@ -298,7 +305,7 @@ test도 delay를 포함된 함수를 호출해야 되기 때문에 당연히 sus
 어떻게 suspend가 없어도 컴파일 에러가 나지 않는것일까요?
 
 위에서 말한 inline의 특성을 이해하면 답을 풀수 있습니다. inline은 람다를 호출하는 쪽의 본문으로 삽입이 됩니다. 
-즉 함수를 실행하는 컨텍스트는 test가 아니라 main 함수 입니다. 따라서 main에는 runBlocking이 있고, delay를 호출하는 함수도 main이기 때문에 정상적으로 실행이 됩니다.
+즉 함수를 실행하는 컨텍스트는 test가 아니라 main 함수 입니다. 따라서 **main에는 runBlocking이 있고, delay를 호출하는 함수도 main이기 때문에 정상적으로 실행**이 됩니다.
 
 ## 후기
 
