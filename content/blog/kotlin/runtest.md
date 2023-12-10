@@ -1,7 +1,7 @@
 ---
-title: '[Android] runTest로 코루틴을 테스트 해보자'
+title: '[Kotlin] runTest로 코루틴을 테스트 해보자'
 date: 2023-06-18 21:00:00
-category: 'android'
+category: 'kotlin'
 draft: false
 keywords: ['runTest','TestDispatcher','Coroutine','UnitTest']
 ---

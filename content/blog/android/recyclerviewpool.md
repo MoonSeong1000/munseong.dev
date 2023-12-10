@@ -129,3 +129,8 @@ class ParentAdapter(private val parentList: List<ParentItem>) :
 
 ### RecyclerViewPool을 적용했을 때
 <img src="https://user-images.githubusercontent.com/52484624/227779549-2fc9d4c7-20bd-4726-a5fb-05565b666266.gif">
+
+## 참고
+https://medium.com/hongbeomi-dev/recyclerview-deep-dive-with-google-i-o-2016-21e0895819d2
+
+https://velog.io/@dabin/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EA%B3%B5%EC%8B%9D%EB%AC%B8%EC%84%9C-%ED%8C%8C%ED%97%A4%EC%B9%98%EA%B8%B0-RecyclerView%EC%9D%98-%EB%AA%A8%EB%93%A0-%EA%B2%83-2%ED%83%84ViewHolder%EC%88%98%EB%AA%85%EC%A3%BC%EA%B8%B0
