@@ -2,7 +2,7 @@
 title: '[Book] Real MySQL 8.0 1권 리뷰'
 date: 2024-01-07 23:00:00
 category: 'mysql'
-draft: false
+draft: true
 keywords: [book, real mysql, mysql, innodb]
 ---
 
