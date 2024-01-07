@@ -4,6 +4,7 @@ date: 2024-01-07 23:00:00
 category: 'mysql'
 draft: false
 keywords: [book, real mysql, mysql, innodb]
+thumbnail: '../../assets/realmysql/realmysql_1.png'
 ---
 
 ![](../../assets/realmysql/realmysql_1.png)
