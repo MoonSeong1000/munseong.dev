@@ -6,13 +6,13 @@ draft: false
 keywords: ['kotlin', 'compiler', 'frontend', 'backend']
 ---
 
-1. [Compiler란?](#1.-Compiler란)
-2. [Kotlin Compiler란?](#2.-Kotlin-Compiler란)
-3. [Kotlin Compiler Frontend](#3.-Kotlin-Complier-Frontend)
-4. [Kotiln Compiler Backend](#4.-Kotlin-Complier-Backend)
-5. [K2 Compiler](#5.-k2-compiler)
+1. [Compiler란?](#1.Compiler란)
+2. [Kotlin Compiler란?](#2.Kotlin Compiler란)
+3. [Kotlin Compiler Frontend](#3.-Kotlin-Compiler-Frontend)
+4. [Kotiln Compiler Backend](#4.-Kotlin-Compiler-Backend)
+5. [K2 Compiler](#5.-K2-Compiler)
 
-## 1. Compiler란
+## 1.Compiler란
 kotlin compiler에 대해 알아보기 전에 Compiler에 대해 간단하게 알아보자.
 간단하게 말하면 source code를 target 또는 machine code로 변환하는 역할을 한다.
 
@@ -28,7 +28,7 @@ kotlin compiler에 대해 알아보기 전에 Compiler에 대해 간단하게 �
 ``
 Compiler에 대해 간단하게 알아봤으니 Kotlin Compiler에 대해서 알아보자.
 
-## 2. Kotlin Compiler란
+## 2.Kotlin Compiler란
 말 그대로 Kotlin으로 쓰인 source code를 컴파일하는 것이다.
 다만 코틀린 컴파일러는 machine code가 아닌, target code로 변환한다. 
 왜냐하면 kotlin은 결국 JVM 위에서 동작하게 되기 때문에, jvm 위에서 동작할 수 있는 바이트 코드로 변환되어야 한다.
@@ -43,7 +43,7 @@ Compiler에 대해 간단하게 알아봤으니 Kotlin Compiler에 대해서 알
 
 Frontend와 Backend에서 무슨 일을 하는지 알아보자.
 
-## 3. Kotlin Compiler Frontend
+## 3.Kotlin Compiler Frontend
 Frontend는 다음과 같은 역할을 수행한다
 - 소스코드의 구문, 어휘, 의미를 분석한다
 - 즉 프로그램 코드의 유효성을 검사한다 (오타가 생기거나 괄호가 누락되면 에러를 내뱉는다)
@@ -114,7 +114,7 @@ dusugarging의 예시로는 아래와 같은 것들이 있다.
   - 데이터 클래스는 자동으로 `equals()`, `hashCode()`, `toString()` 등의 메서드를 생성한다. 이러한 메서드 선언은 컴파일 과정에서 추가된다.
 - 등등
 
-## 4. Kotlin Compiler Backend
+##4. Kotlin Compiler Backend
 Backend는 frontend의 결과를 입력으로 취해서 다양한 대상으로 바이트코드를 생성한다. 
 이번에도 Old kotlin complier와 개선된 New kotlin compiler로 나뉜다.
 
@@ -132,7 +132,7 @@ Backend는 frontend의 결과를 입력으로 취해서 다양한 대상으로 �
 
 <img src="../../assets/k2compiler/k2compiler_8.png">
 
-## 5. K2 Compiler
+##5. K2 Compiler
 위에서 봤던 New Frontend 구조와 New backend 구조를 합치면 아래 그림이 된다.  
 kotlin 2.0 부터 stable하게 도입될 예정이다. 
 현재는 kotlin beta로 2.0이 운용되고 있고, 계속해서 안정화 중이라고 한다.
