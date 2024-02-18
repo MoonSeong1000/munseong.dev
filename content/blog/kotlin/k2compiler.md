@@ -6,11 +6,11 @@ draft: false
 keywords: ['kotlin', 'compiler', 'frontend', 'backend']
 ---
 
-1. [Compiler란?](#1.Compiler란)
-2. [Kotlin Compiler란?](#2.Kotlin Compiler란)
-3. [Kotlin Compiler Frontend](#3.-Kotlin-Compiler-Frontend)
-4. [Kotiln Compiler Backend](#4.-Kotlin-Compiler-Backend)
-5. [K2 Compiler](#5.-K2-Compiler)
+1. [Compiler란?](#1.compiler란)
+2. [Kotlin Compiler란?](#2.kotlin-compiler란)
+3. [Kotlin Compiler Frontend](#3.-kotlin-compiler-frontend)
+4. [Kotiln Compiler Backend](#4.-kotlin-compiler-backend)
+5. [K2 Compiler](#5.-k2-compiler)
 
 ## 1.Compiler란
 kotlin compiler에 대해 알아보기 전에 Compiler에 대해 간단하게 알아보자.
