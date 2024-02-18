@@ -6,11 +6,16 @@ draft: false
 keywords: ['kotlin', 'compiler', 'frontend', 'backend']
 ---
 
-1. [Compiler란?](#1.-compiler란)
-2. [Kotlin Compiler란?](#2.-kotlin-compiler란)
-3. [Kotlin Compiler Frontend](#3.-kotlin-compiler-frontend)
-4. [Kotiln Compiler Backend](#4.-kotlin-compiler-backend)
-5. [K2 Compiler](#5.-k2-compiler)
+- [1. Compiler란](#1-compiler란)
+- [2. Kotlin Compiler란](#2-kotlin-compiler란)
+- [3. Kotlin Compiler Frontend](#3-kotlin-compiler-frontend)
+  * [3.1 Old Frontend](#31-old-frontend)
+  * [3.2 New Frontend](#32-new-frontend)
+  * [3.3 Desugaring](#33-desugaring)
+- [4. Kotlin Compiler Backend](#4-kotlin-compiler-backend)
+  * [4.1 Old Backend](#41-old-backend)
+  * [4.2 New Backend](#42-new-backend)
+- [5. K2 Compiler](#5-k2-compiler)
 
 ## 1. Compiler란
 kotlin compiler에 대해 알아보기 전에 Compiler에 대해 간단하게 알아보자.
@@ -25,7 +30,7 @@ kotlin compiler에 대해 알아보기 전에 Compiler에 대해 간단하게 �
     - not human-readable
     - 기계가 실행하기 위한 일련의 명령어
     - 메모리 로드, 값 저장, 프로세서에 대한 명령의 추상화
-``
+
 Compiler에 대해 간단하게 알아봤으니 Kotlin Compiler에 대해서 알아보자.
 
 ## 2. Kotlin Compiler란
@@ -93,7 +98,6 @@ if (pet is Cat) {
 - binding context는 의미를 담기 위한 별도의 데이터 구조이다.
 - New Frontend에서는 맵에 저장하지 않고, 의미 정보가 트리에 직접 저장된다. 이 구조는 **FIR(Frontend Intermediate Representation)**이라고 부른다
 - 정리하자면 Old는 트리와 맵인 두개의 데이터 구조를 생성한다면, New는 하나의 데이터 구조를 생성하게끔해서 성능 향상을 시킨다
-- Kotlin 
   
 <img src="../../assets/k2compiler/k2compiler_6.png">
 
@@ -107,7 +111,7 @@ dusugarging의 예시로는 아래와 같은 것들이 있다.
 - 구조 분해 선언 desugaring
   - 구조 분해 선언은 풀어서 선언된다. 
   - 예를 들어, `val (a, b) = pair`는 `val a = pair.component1(); val b = pair.component2()`로 변환된다.
-- for문 Desugaring
+- for문 desugaring
   - iterator' 규약을 사용하는 for문은 while문으로 대체된다. 
   - 예를 들어, `for (item in collection)`은 `val it = collection.iterator(); while (it.hasNext()) { val item = it.next() }`로 변환된다.
 - data class에 대한 메서드 생성
@@ -136,7 +140,7 @@ Backend는 frontend의 결과를 입력으로 취해서 다양한 대상으로 �
 위에서 봤던 New Frontend 구조와 New backend 구조를 합치면 아래 그림이 된다.  
 kotlin 2.0 부터 stable하게 도입될 예정이다. 
 현재는 kotlin beta로 2.0이 운용되고 있고, 계속해서 안정화 중이라고 한다.
-New Frontend가 도입되면 기존보다 약 두배정도의 성능이 향상될 것이라고 한다.
+New Frontend가 도입되면 기존보다 약 두배 정도의 성능이 향상될 것이라고 한다.
 
 <img src="../../assets/k2compiler/k2compiler_9.png">
 
