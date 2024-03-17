@@ -1,7 +1,7 @@
 ---
 title: '[Android] MVI 아키텍처로 마이그레이션 및 설계 살펴보기'
 date: 2024-03-17 22:00:00
-category: 'android', 'mvi'
+category: 'architecture'
 draft: false
 keywords: ['mvi','mvvm','architecture','reducers']
 ---
@@ -17,8 +17,9 @@ keywords: ['mvi','mvvm','architecture','reducers']
 작년에 신규 프로젝트를 시작함에 따라 아키텍쳐를 조사하였다. 기존에는 MVVM + 클린아키텍처로 적용하였는데, 앱의 요구사항이 늘어남에 따라 상태관리에 점점 한계를 느끼게 되었다. 아키텍처 조사 중에 MVI에 대해 도입을 논의하였고, 실제 적용해보면서 기존의 한계점과, MVI에서는 어떻게 해결할수 있었는지, 또한 어떻게 컴포넌트를 나누었는지 정리를 하려고 한다.
 ## 1. mvvm에서 mvi로
 
-    MVVM 패턴에 기반해서 아키텍처를 짜는 이유에는 많이 아시다싶이 뷰 로직과 비지니스 로직이 분리되고, 상태 observing을 통한 reactive 프로그래밍이 쉬워지며, databinding 등 많은 이점이 있다. 즉 레어어별로 역할이 분리되고, 독립성 유지와 의존성 감소라는 효과가 있어 실제 필드에서도 많이 사용되는 패턴이다.
-    <img src="../../assets/mvi/mvi_1.png">
+MVVM 패턴에 기반해서 아키텍처를 짜는 이유에는 많이 아시다싶이 뷰 로직과 비지니스 로직이 분리되고, 상태 observing을 통한 reactive 프로그래밍이 쉬워지며, databinding 등 많은 이점이 있다. 즉 레어어별로 역할이 분리되고, 독립성 유지와 의존성 감소라는 효과가 있어 실제 필드에서도 많이 사용되는 패턴이다.
+
+<img src="../../assets/mvi/mvi_1.png">
 
 많이 사용될 만큼 충분히 이상적이고 좋은 패턴이지만, 화면에 대한 요구사항이 커지고, 상태가 늘어남에 따라 복잡한 데이터 흐름과 상태 충돌, 스레드 안정성이라는 문제에 대한 한계점이 존재한다. databinding을 통해 뷰가 데이터를 구독할수 있지만, viewModel에서의 데이터바인딩과 view 내부에서도 스스로 바인딩 하는 경우가 있고, view와 viewModel이 핑퐁을 통해 로직을 처리하다보면 복잡한 데이터 흐름으로 인해 파악하기 힘들때도 있었다. 한마디로 표현하면 view와 viewModel의 양방향 참조가 가능해서 생기는 문제가 있다.
 
@@ -301,7 +302,7 @@ class TodoListViewModel(
 위의 컴포넌트를 결합하면 아래와 같은 그림이 된다.
 기본 MVI를 적용하였을때 ViewModel이 무거웠는데, 새로운 컴포넌트에 역할을 위임함으로써, ViewModel은 Actinprocess를 호출하고, Reducer를 통해 수집된 상태를 반영하기만 하는 책임을 가지게 되었다.
 
-MVI에 대해서 조사해보면 굉장히 많은 패턴이 있다. 이 때문인지, MVI를 기반으로한 프레임워크들이 많이 있었다. Airbnb에서 만든 Mavericks(), spotify의 [mobius](https://github.com/spotify/mobius), [orbit](https://github.com/orbit-mvi/orbit-mvi) 등등 많이 볼수 있었다. 위 예제는 [이 레포](https://github.com/uteke/contact-book/tree/main)를 참조하였다.
+MVI에 대해서 조사해보면 굉장히 많은 패턴이 있다. 이 때문인지, MVI를 기반으로한 프레임워크들이 많이 있었다. Airbnb에서 만든 Mavericks(), spotify의 [mobius](https://github.com/spotify/mobius), [orbit](https://github.com/orbit-mvi/orbit-mvi) 등등 많이 볼수 있었다. 이 글에서 소개한 예제는 [해당 레포](https://github.com/uteke/contact-book/tree/main)를 참조하였다.
 
 이 글에서 MVVM의 단점에 대해서 서술을 했는데, 사실 MVVM에서도 MVI처럼 중간에 eventDispatcher등을 두고, ViewModel에서 단일 상태를 두어서 기존 MVVM의 단점을 많이 상쇄시킬수 있다. (배민 우아콘 참고: https://www.youtube.com/watch?v=pdy1WXEawiw&t=1405s)
 
